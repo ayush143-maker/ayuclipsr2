@@ -1,0 +1,13 @@
+{
+  "name": "ayuclips",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "dev": "wrangler pages dev apps/web"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}

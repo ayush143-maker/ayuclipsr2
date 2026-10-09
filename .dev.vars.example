@@ -1,0 +1,2 @@
+WORKSPACE_PASSWORD=replace-with-long-private-key
+SESSION_SECRET=replace-with-32-plus-random-characters

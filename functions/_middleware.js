@@ -1,0 +1,1 @@
+export async function onRequest({request,next}){const r=await next(),h=new Headers(r.headers);h.set('x-content-type-options','nosniff');h.set('referrer-policy','strict-origin-when-cross-origin');return new Response(r.body,{status:r.status,headers:h})}

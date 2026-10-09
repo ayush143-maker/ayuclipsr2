@@ -1,0 +1,1 @@
+import {reply} from '../_lib.js';export async function onRequestGet({env}){return reply({ok:true,bindings:{db:!!env.DB,media:!!env.MEDIA,queue:!!env.JOBS}})}

@@ -1,0 +1,1 @@
+import {auth,reply,fail} from '../_lib.js';export async function onRequestGet({request,env}){const s=await auth(request,env);if(!s)return fail('Unauthorized',401);const r=await env.DB.prepare('SELECT * FROM activity_logs WHERE workspace_id=? ORDER BY created_at DESC LIMIT 80').bind(s.workspaceId).all();return reply({activity:r.results||[]})}

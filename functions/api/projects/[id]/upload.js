@@ -1,0 +1,1 @@
+import {auth,body,fail} from '../../../_lib.js';export async function onRequestPost({request,env,params}){const s=await auth(request,env);if(!s)return fail('Unauthorized',401);if(!env.MEDIA)return fail('R2 is not enabled or not bound as MEDIA',503);await body(request);return fail('Multipart R2 upload is not implemented in this starter yet; no file was uploaded.',501)}

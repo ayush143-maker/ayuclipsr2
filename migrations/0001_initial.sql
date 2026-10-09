@@ -1,0 +1,10 @@
+PRAGMA foreign_keys=ON;
+CREATE TABLE IF NOT EXISTS users(id TEXT PRIMARY KEY,display_name TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE TABLE IF NOT EXISTS workspaces(id TEXT PRIMARY KEY,name TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE TABLE IF NOT EXISTS workspace_members(workspace_id TEXT NOT NULL REFERENCES workspaces(id),user_id TEXT NOT NULL REFERENCES users(id),role TEXT NOT NULL DEFAULT 'editor',PRIMARY KEY(workspace_id,user_id));
+CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY,workspace_id TEXT NOT NULL REFERENCES workspaces(id),created_by TEXT NOT NULL REFERENCES users(id),title TEXT NOT NULL,source_key TEXT,source_name TEXT,source_size INTEGER,source_duration REAL,clip_seconds REAL NOT NULL DEFAULT 150,status TEXT NOT NULL DEFAULT 'draft',created_at TEXT NOT NULL DEFAULT(datetime('now')),updated_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES projects(id),status TEXT NOT NULL DEFAULT 'queued',progress INTEGER NOT NULL DEFAULT 0,clip_seconds REAL NOT NULL,total_clips INTEGER,error_message TEXT,created_at TEXT NOT NULL DEFAULT(datetime('now')),updated_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE TABLE IF NOT EXISTS clips(id TEXT PRIMARY KEY,project_id TEXT NOT NULL REFERENCES projects(id),job_id TEXT REFERENCES jobs(id),clip_index INTEGER NOT NULL,object_key TEXT NOT NULL,duration REAL NOT NULL,size_bytes INTEGER,created_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE TABLE IF NOT EXISTS activity_logs(id TEXT PRIMARY KEY,workspace_id TEXT NOT NULL REFERENCES workspaces(id),project_id TEXT,actor_id TEXT,actor_name TEXT NOT NULL,action TEXT NOT NULL,detail TEXT,created_at TEXT NOT NULL DEFAULT(datetime('now')));
+CREATE INDEX IF NOT EXISTS idx_projects_workspace ON projects(workspace_id,updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_activity_workspace ON activity_logs(workspace_id,created_at DESC);
